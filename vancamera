@@ -1,0 +1,30 @@
+import cv2
+
+pipeline = "v4l2src device=/dev/video2 ! videoconvert ! appsink"2
+camera = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
+
+# Check if the camera opened successfully
+if not camera.isOpened():
+    print("Error opening camera")
+    exit()
+
+# Main loop to display the camera feed
+while True:
+    # Read a frame from the camera
+    ret, frame = camera.read()
+
+    if not ret:
+        print("Error reading from camera")
+        break
+
+    # Display the frame
+    cv2.imshow("Camera Feed", frame)
+
+    # Exit if the 'q' key is pressed
+    if cv2.waitKey(1) == ord('q'):
+        break
+
+# Release the camera and close the window
+camera.release()
+cv2.destroyAllWindows()
+
